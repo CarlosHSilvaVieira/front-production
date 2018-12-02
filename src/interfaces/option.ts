@@ -1,5 +1,5 @@
-export interface OptionInterface<T> {
+export interface OptionInterface {
 
     label: string
-    value: T
+    value: string | number | string[]
 }

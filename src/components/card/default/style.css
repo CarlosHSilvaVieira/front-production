@@ -1,0 +1,20 @@
+.container_card {
+
+    display: flex;
+    flex-direction: column;
+    width: 600px;
+    margin: 30px auto;
+    box-shadow: 0 5px 15px rgba(0,0,0,.5);
+    border-radius: 15px;
+    border:  1px solid #e5e5e5;
+}
+
+.body_card {
+
+    padding: 20px;
+}
+
+.header_card {
+    padding: 15px;
+    border-bottom: 1px solid #e5e5e5;
+}
