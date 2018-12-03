@@ -17,6 +17,8 @@ import { OptionInterface } from '../../interfaces/option'
 import { StockInterface } from '../../interfaces/stock'
 import { ProductionOrderInterface } from '../../interfaces/production_order';
 
+import { Link } from 'react-router-dom'
+
 import connect from './connect'
 
 interface PropTypes {
@@ -69,6 +71,9 @@ class OperacionalPage extends React.Component<PropTypes, any> {
                     <div>
                         <div className={'form'}>
                             <h3>Disponibilidade de recursos no estoque para produção</h3>
+                            <Link to={'/'}>Operacional</Link>
+                            <Link to={'/tatico'}>Tático</Link>
+                            <Link to={'/estrategico'}>Estratégico</Link>
                             <Form>
                                 <Select
                                     label={'Ordem de produção'}

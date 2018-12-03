@@ -49,7 +49,7 @@ class Select extends React.Component<PropTypes, any> {
                     {this.props.label}
                 </Label>
                 <FormControl componentClass="select" placeholder="select" onChange={this.handleSelect}>
-                    <option value={0}>Selecione a ordem</option>
+                    <option value={0}>Selecione</option>
                     {this.renderOptions()}
                 </FormControl>
             </FormGroup>

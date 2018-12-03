@@ -37,6 +37,7 @@ const Constants = {
             getNotasByUsuario: '/getNotasByUsuario',
             getAllValoresNotas: '/getAllValoresNotas',
             getNotasByTipoMovimentacao: '/getNotasByTipoMovimentacao',
+            getAllProducaoPorMesTurno: '/getAllProducaoPorMesTurno',
         }
     },
     Sales_API: {

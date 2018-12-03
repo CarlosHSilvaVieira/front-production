@@ -1,0 +1,14 @@
+
+.container {
+    display: flex;
+}
+
+.form {
+    
+}
+
+.chart {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}

@@ -14,9 +14,9 @@ class MyHeader extends React.Component {
                     <Navbar.Toggle />
                 </Navbar.Header>
                 <Nav>
-                    <NavItem eventKey={1} href="#">Operacional</NavItem>
-                    <NavItem eventKey={2} href="#">Tático</NavItem>
-                    <NavItem eventKey={2} href="#">Estratégico</NavItem>
+                    <NavItem eventKey={1} href="/">Operacional</NavItem>
+                    <NavItem eventKey={2} href="/tatico">Tático</NavItem>
+                    <NavItem eventKey={2} href="/estrategico">Estratégico</NavItem>
                 </Nav>
             </Navbar>
         )
