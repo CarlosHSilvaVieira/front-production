@@ -30,7 +30,7 @@ export const createOptionsProductionOrder = (options: ProductionOrderInterface[]
 
         const new_option: OptionInterface = {
             label: option.id.toString(),
-            value: option.id
+            value: option.id,
         }
 
         return new_option
@@ -39,15 +39,14 @@ export const createOptionsProductionOrder = (options: ProductionOrderInterface[]
 
 export const setOptions = (options: OptionInterface[]) => ({
     type: operationalActions.SET_OPTIONS,
-    payload: options
+    payload: options,
 })
 
 export const setProductionOrders = (orders: ProductionOrderInterface[]) => ({
 
     type: operationalActions.SET_PRODUCTION_ORDERS,
-    payload: orders
+    payload: orders,
 })
-
 
 export const fetchCostRawMaterial = () => {
 
@@ -63,7 +62,7 @@ export const fetchEmployee = () => {
 }
 
 export const setCost = (cost: number) => ({
-    
+
     type: operationalActions.SET_COST,
     payload: cost,
 })

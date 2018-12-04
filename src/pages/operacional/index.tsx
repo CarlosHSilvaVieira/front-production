@@ -15,7 +15,7 @@ import './style.css'
 
 import { OptionInterface } from '../../interfaces/option'
 import { StockInterface } from '../../interfaces/stock'
-import { ProductionOrderInterface } from '../../interfaces/production_order';
+import { ProductionOrderInterface } from '../../interfaces/production_order'
 
 import { Link } from 'react-router-dom'
 
@@ -51,7 +51,7 @@ class OperacionalPage extends React.Component<PropTypes, any> {
 
         if (this.props.production_orders.length) {
 
-            const production_order = find(this.props.production_orders, (prod: ProductionOrderInterface, index: number) => prod.id == event.target.value)
+            const production_order = find(this.props.production_orders, (prod: ProductionOrderInterface, index: number) => prod.id === event.target.value)
             this.props.setSelectedOrder(production_order)
         }
     }
@@ -104,7 +104,10 @@ class OperacionalPage extends React.Component<PropTypes, any> {
                                     </p>
                                     <p>
                                         <span>Custo de produção: </span>
-                                        <span>{this.props.fetchCostRawMaterial && this.props.selected_order ? Math.abs(this.props.selected_order.quantidade * this.props.cost_raw_material).toFixed(2) : ''}</span>
+                                        <span>{this.props.fetchCostRawMaterial && this.props.selected_order ?
+                                            Math.abs(this.props.selected_order.quantidade * this.props.cost_raw_material).toFixed(2)
+                                            : ''}
+                                        </span>
                                     </p>
                                 </Card>
                             </div>

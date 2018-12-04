@@ -1,5 +1,3 @@
-import { MaterialInterface } from "./material";
-
 export interface ProductionOrderInterface {
 
     id: number,

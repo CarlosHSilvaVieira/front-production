@@ -1,22 +1,22 @@
 import * as React from 'react'
 
-import { Form } from 'react-bootstrap'
-import { addYears, getYear, getMonth, startOfYear, endOfYear, } from 'date-fns'
+import { Form, Button, Col, ControlLabel } from 'react-bootstrap'
+import { addYears, getYear, getMonth, startOfYear, endOfYear } from 'date-fns'
 import { getMonthName, processProductionsOrders } from '../../redux/actions/pages/tactical'
 import { forEach } from 'lodash'
 
 import { OptionInterface } from '../../interfaces/option'
-import { ProductionInterface } from '../../interfaces/production';
-import { ProductionOrderInterface } from '../../interfaces/production_order';
+import { ProductionInterface } from '../../interfaces/production'
+import { ProductionOrderInterface } from '../../interfaces/production_order'
 
 import Header from '../../components/header'
 import Footer from '../../components/footer'
 import Select from '../../components/select'
 import BarChart from '../../components/charts/barMix'
+import Card from '../../components/card/default'
 
 import connect from './connect'
 import './style.css'
-
 
 interface PropTypes {
 
@@ -26,6 +26,7 @@ interface PropTypes {
     productions: ProductionInterface[],
     production_orders: ProductionOrderInterface[],
     data: any,
+    worked_hours: number
     // Functions
 
     fetchCostRawMaterial: any,
@@ -34,16 +35,16 @@ interface PropTypes {
     setYear: any,
     setMonth: any,
     setData: any,
+    fetchHoursMonth: any,
 }
 
 class TacticalPage extends React.Component<PropTypes, any> {
-
 
     constructor(props: PropTypes) {
         super(props)
 
         this.state = {
-            range: { start: new Date(), end: addYears(new Date(), 2) }
+            range: { start: new Date(), end: addYears(new Date(), 2) },
         }
 
         this.handleSelectMonth = this.handleSelectMonth.bind(this)
@@ -63,19 +64,19 @@ class TacticalPage extends React.Component<PropTypes, any> {
 
         let manha: number = 0
         let tarde: number = 0
-        let  noite: number = 0
+        let noite: number = 0
 
         forEach(productions, (production: ProductionInterface, index: number) => {
 
-            if (production.turno == 'Manhã') {
+            if (production.turno === 'Manhã') {
 
                 manha += production.quantidade
             }
-            else if (production.turno == 'Tarde') {
+            else if (production.turno === 'Tarde') {
 
                 tarde += production.quantidade
             }
-            else if (production.turno == 'Noite') {
+            else if (production.turno === 'Noite') {
 
                 noite += production.quantidade
             }
@@ -84,7 +85,7 @@ class TacticalPage extends React.Component<PropTypes, any> {
         return {
             manha,
             tarde,
-            noite
+            noite,
         }
     }
 
@@ -92,8 +93,8 @@ class TacticalPage extends React.Component<PropTypes, any> {
 
         const quant_orders: number = processProductionsOrders(orders)
         const quant_production: { manha: number, tarde: number, noite: number } = this.processProductions(productions)
-        
-        const data = [{ name: 'algo', manha: quant_production.manha, tarde: quant_production.tarde, noite: quant_production.noite,  total: quant_orders }]
+
+        const data = [{ name: 'algo', manha: quant_production.manha, tarde: quant_production.tarde, noite: quant_production.noite, total: quant_orders }]
 
         this.props.setData(data)
     }
@@ -111,7 +112,7 @@ class TacticalPage extends React.Component<PropTypes, any> {
 
             options.push({
                 label: index.toString(),
-                value: index
+                value: index,
             })
         }
 
@@ -122,12 +123,11 @@ class TacticalPage extends React.Component<PropTypes, any> {
 
         const options: OptionInterface[] = []
 
-
         for (let index = 0; index <= 11; index++) {
 
             options.push({
                 label: getMonthName(index),
-                value: index
+                value: index,
             })
         }
 
@@ -136,18 +136,19 @@ class TacticalPage extends React.Component<PropTypes, any> {
 
     handleSelectMonth(event: any) {
 
-        this.props.setMonth(event.target.value)
+        this.props.setMonth(Number(event.target.value))
     }
 
     handleSelectYear(event: any) {
 
-        this.props.setYear(event.target.value)
+        this.props.setYear(Number(event.target.value))
     }
 
     makeRequests() {
-        
+
         this.props.fetchProdOrders(this.props.month, this.props.year)
         this.props.fetchProduction(this.props.month, this.props.year)
+        this.props.fetchHoursMonth(this.props.month)
     }
 
     render() {
@@ -157,39 +158,59 @@ class TacticalPage extends React.Component<PropTypes, any> {
                 <Header />
                 <div className={'container'}>
                     <div>
-                        <div className={'form'}>
+                        <div>
                             <h3>Relação do que foi produzido para o que foi requerido em um turno</h3>
-                            <Form>
-                                <Select
-                                    label={'Mês'}
-                                    control_id={'control_form'}
-                                    handleSelect={this.handleSelectMonth}
-                                    options={this.createMonthOprions()}
-                                />
-                                <Select
-                                    label={'Ano'}
-                                    control_id={'control_form'}
-                                    handleSelect={this.handleSelectYear}
-                                    options={this.createYearOptions()}
-                                />
-                            </Form>
                         </div>
-                        <div className={'chart'}>
-                            <BarChart
-                                width={500}
-                                heigth={500}
-                                xname={''}
-                                data_key={[
-                                    { key: 'manha', color: 'blue', stackId: 'a' },
-                                    { key: 'tarde', color: 'red', stackId: 'a' },
-                                    { key: 'noite', color: 'green', stackId: 'a' },
-                                    { key: 'total', color: 'yellow', stackId: null },
-                                ]}
-                                data={this.props.data}
-                            />
+
+                        <div className={'content'}>
+                            <div className={'from_chart'}>
+                                <div className={'form'}>
+                                    <Form horizontal>
+                                        <Select
+                                            label={''}
+                                            control_id={'control_form'}
+                                            handleSelect={this.handleSelectMonth}
+                                            options={this.createMonthOprions()}
+                                        />
+                                        <Select
+                                            label={''}
+                                            control_id={'control_form'}
+                                            handleSelect={this.handleSelectYear}
+                                            options={this.createYearOptions()}
+                                        />
+                                        <Button block onClick={this.makeRequests} bsStyle='primary'>Pesquisar</Button>
+                                    </Form>
+                                </div>
+                                <Card header={'Detalhes'}>
+                                    <p>
+                                        <span>horas trabalhadas no mês: </span>
+                                        <span>{this.props.production_orders ? processProductionsOrders(this.props.production_orders) : ''}</span>
+                                    </p>
+                                    <p>
+                                        <span>Custo de produção estimado: </span>
+                                        <span>{this.props.fetchCostRawMaterial && this.props.production_orders ?
+                                            Math.abs(processProductionsOrders(this.props.production_orders) * this.props.cost_raw_material).toFixed(2)
+                                            : ''}
+                                        </span>
+                                    </p>
+                                </Card>
+                            </div>
                         </div>
                     </div>
-
+                    <div className={'chart'}>
+                        <BarChart
+                            width={500}
+                            heigth={500}
+                            xname={'Produção por turno'}
+                            data_key={[
+                                { key: 'manha', color: 'blue', stackId: 'a' },
+                                { key: 'tarde', color: 'red', stackId: 'a' },
+                                { key: 'noite', color: 'green', stackId: 'a' },
+                                { key: 'total', color: '#400080', stackId: null },
+                            ]}
+                            data={this.props.data}
+                        />
+                    </div>
                 </div>
                 <Footer />
             </div>

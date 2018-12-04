@@ -18,10 +18,10 @@ const Constants = {
             Treinamentos: '/api/Treinamentos',
             Values: '/api/Values',
             Funcionarios: '/api/Funcionarios',
-        }
+        },
     },
-    Production_API: {
-        address: 'https://production-api.azurewebsites.net',
+    Production: {
+        address: 'https://sigepm.azurewebsites.net',
         routes: {
             getProducaoByUsuario: '/getProducaoByUsuario',
             getProducaoByTurno: '/getProducaoByTurno',
@@ -38,7 +38,7 @@ const Constants = {
             getAllValoresNotas: '/getAllValoresNotas',
             getNotasByTipoMovimentacao: '/getNotasByTipoMovimentacao',
             getAllProducaoPorMesTurno: '/getAllProducaoPorMesTurno',
-        }
+        },
     },
     Sales_API: {
         address: 'https://sigemv.azurewebsites.net',
@@ -46,10 +46,10 @@ const Constants = {
             EventosClasses: '/api/EventosClasses/',
             Vendas: '/api/Vendas/',
             Values: '/api/Values/',
-            Pedidos: '/api/Pedidos/'
-        }
+            Pedidos: '/api/Pedidos/',
+        },
     },
-    Financial_API: { 
+    Financial_API: {
         address: 'http://trabalhosige.azurewebsites.net',
         routes: {
             Produto: '/api/Produto',
@@ -60,7 +60,7 @@ const Constants = {
             Conta_Pagar: '/api/Conta_Pagar',
             CustoMateriaPrima: '/api/CustoMateriaPrima',
             SuprimentoDeCaixa: '/api/SuprimentoDeCaixa',
-        }
+        },
     },
 }
 
