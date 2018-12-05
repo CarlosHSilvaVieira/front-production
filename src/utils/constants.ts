@@ -11,7 +11,7 @@ const Constants = {
         turno: 'turno',
     },
 
-    RH_API: {
+    RH: {
         address: 'https://sigerh.azurewebsites.net',
         routes: {
             HorasTrabalhadas: '/api/HorasTrabalhadas',
@@ -38,19 +38,20 @@ const Constants = {
             getAllValoresNotas: '/getAllValoresNotas',
             getNotasByTipoMovimentacao: '/getNotasByTipoMovimentacao',
             getAllProducaoPorMesTurno: '/getAllProducaoPorMesTurno',
+            getEstoqueMP: '/getEstoqueMP',
         },
     },
-    Sales_API: {
+    Sales: {
         address: 'https://sigemv.azurewebsites.net',
         routes: {
-            EventosClasses: '/EventosClasses/',
-            Vendas: '/Vendas/',
-            Values: '/Values/',
-            Pedidos: '/Pedidos/',
+            EventosClasses: '/api/EventosClasses/',
+            Vendas: '/api/Vendas/',
+            Values: '/api/Values/',
+            Pedidos: '/api/Pedidos/',
             PedidosPeriodo: '/PedidosPeriodo/',
         },
     },
-    Financial_API: {
+    Financial: {
         address: 'http://trabalhosige.azurewebsites.net',
         routes: {
             Produto: '/api/Produto',

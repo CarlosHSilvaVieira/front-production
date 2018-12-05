@@ -14,10 +14,9 @@ import BarChart from '../../components/charts/bar'
 import './style.css'
 
 import { OptionInterface } from '../../interfaces/option'
-import { StockInterface } from '../../interfaces/stock'
 import { ProductionOrderInterface } from '../../interfaces/production_order'
 
-import { Link } from 'react-router-dom'
+import { format } from 'date-fns'
 
 import connect from './connect'
 
@@ -27,11 +26,13 @@ interface PropTypes {
     selected_order: ProductionOrderInterface,
     options: OptionInterface[],
     production_orders: ProductionOrderInterface[],
+    stock: number
 
     // Functions
     fetchCostRawMaterial: any,
     setSelectedOrder: any,
     fetchOptions: any,
+    getStock: any,
 }
 
 class OperacionalPage extends React.Component<PropTypes, any> {
@@ -39,20 +40,40 @@ class OperacionalPage extends React.Component<PropTypes, any> {
     constructor(props: PropTypes) {
         super(props)
 
+        this.state = {
+            data: [],
+        }
+
         this.handleSelect = this.handleSelect.bind(this)
     }
 
     componentWillMount() {
         this.props.fetchCostRawMaterial()
         this.props.fetchOptions()
+        this.props.getStock()
     }
 
     handleSelect(event: any) {
 
         if (this.props.production_orders.length) {
 
-            const production_order = find(this.props.production_orders, (prod: ProductionOrderInterface, index: number) => prod.id === event.target.value)
+            const production_order = find(this.props.production_orders, (prod: ProductionOrderInterface, index: number) => {
+
+                if (prod.IdPedido === Number(event.target.value)) {
+
+                    return prod
+                }
+            })
+
             this.props.setSelectedOrder(production_order)
+        }
+    }
+
+    componentWillReceiveProps(next: PropTypes) {
+
+        if (next.stock && next.selected_order) {
+
+            this.setState({ data: [{ name: next.selected_order.IdPedido, estoque: next.stock, quantidade: next.selected_order.quantidade }] })
         }
     }
 
@@ -60,7 +81,9 @@ class OperacionalPage extends React.Component<PropTypes, any> {
 
         if (!this.props.selected_order) { return [] }
 
-        return [{ name: this.props.selected_order.id, estoque: 2000, quantidade: this.props.selected_order.quantidade }]
+        console.log(this.props.stock)
+
+        return [{ name: this.props.selected_order.IdPedido, estoque: this.props.stock, quantidade: this.props.selected_order.quantidade }]
     }
 
     render() {
@@ -85,7 +108,7 @@ class OperacionalPage extends React.Component<PropTypes, any> {
                                 <Card header={'Detalhes da Ordem de Produção'}>
                                     <p>
                                         <span>id: </span>
-                                        <span>{this.props.selected_order ? this.props.selected_order.id : ''}</span>
+                                        <span>{this.props.selected_order ? this.props.selected_order.IdPedido : ''}</span>
                                     </p>
                                     <p>
                                         <span>quantidade: </span>
@@ -93,7 +116,7 @@ class OperacionalPage extends React.Component<PropTypes, any> {
                                     </p>
                                     <p>
                                         <span>data: </span>
-                                        <span>{this.props.selected_order ? this.props.selected_order.dataPedido : ''}</span>
+                                        <span>{this.props.selected_order ? format(new Date(this.props.selected_order.dataPedido), 'dd/MM/yyyy') : ''}</span>
                                     </p>
                                     <p>
                                         <span>cliente: </span>
@@ -115,7 +138,7 @@ class OperacionalPage extends React.Component<PropTypes, any> {
                                 data_key={[{
                                     key: 'estoque', color: 'blue',
                                 }, { key: 'quantidade', color: 'red' }]}
-                                data={this.processQuant()}
+                                data={this.state.data}
                             />
                         </div>
                     </div>

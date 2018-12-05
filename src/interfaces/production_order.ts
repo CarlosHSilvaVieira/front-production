@@ -1,6 +1,6 @@
 export interface ProductionOrderInterface {
 
-    id: number,
+    IdPedido: number,
     quantidade: number,
     dataPedido: string,
     cliente: string,

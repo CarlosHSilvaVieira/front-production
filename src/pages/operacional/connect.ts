@@ -1,12 +1,14 @@
 import { connect } from 'react-redux'
-import { 
-    fetchCostRawMaterial, 
-    setCost, 
-    setSelectedOrder, 
-    setOptions, 
+import {
+    fetchCostRawMaterial,
+    setCost,
+    setSelectedOrder,
+    setOptions,
     setProductionOrders,
     fetchProductionOrders,
     createOptionsProductionOrder,
+    getStock,
+    setStock,
 } from '../../redux/actions/pages/operational'
 
 const mapStateToProps = (state: any, own: any) => {
@@ -17,6 +19,7 @@ const mapStateToProps = (state: any, own: any) => {
         selected_order: state.operationalPage.selected_order,
         options: state.operationalPage.options,
         production_orders: state.operationalPage.production_orders,
+        stock: state.operationalPage.stock,
     }
 
     return props
@@ -29,8 +32,8 @@ const mapDispatchToProps = (dispatch: any) => {
         fetchCostRawMaterial: () => {
 
             fetchCostRawMaterial()
-            .then((response) => dispatch(setCost(response)))
-            .catch((error) => dispatch(setCost(error)))
+                .then((response) => dispatch(setCost(response)))
+                .catch((error) => dispatch(setCost(error)))
         },
 
         setSelectedOrder: (order: any) => {
@@ -40,9 +43,16 @@ const mapDispatchToProps = (dispatch: any) => {
         fetchOptions: () => {
 
             fetchProductionOrders()
-            .then((response) => { dispatch(setOptions(createOptionsProductionOrder(response))); dispatch(setProductionOrders(response)) })
-            .catch((error) => { dispatch(setOptions(createOptionsProductionOrder(error))); dispatch(setProductionOrders(error)) })
-        }
+                .then((response) => { dispatch(setOptions(createOptionsProductionOrder(response))); dispatch(setProductionOrders(response)) })
+                .catch((error) => { dispatch(setOptions(createOptionsProductionOrder(error))); dispatch(setProductionOrders(error)) })
+        },
+
+        getStock: () => {
+
+            getStock()
+            .then((response) => dispatch(setStock(response)))
+            .catch((error) => dispatch(setStock(error)))
+        },
     }
 }
 

@@ -8,6 +8,9 @@ export default (state = initialState, action: any) => {
         case operationalActions.SET_COST:
             return { ...state, cost_raw_material: action.payload }
 
+        case operationalActions.SET_STOCK:
+            return { ...state, stock: action.payload }
+
         case operationalActions.SET_SELECTED_ORDER:
             return { ...state, selected_order: action.payload }
 

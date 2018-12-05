@@ -2,7 +2,7 @@ import * as React from 'react'
 
 import { map } from 'lodash'
 
-import { BarChart, CartesianGrid, Legend, XAxis, YAxis, Tooltip, Bar } from 'recharts'
+import { BarChart, CartesianGrid, Legend, XAxis, YAxis, Tooltip, Bar, ReferenceLine } from 'recharts'
 
 interface PropTypes {
 
@@ -10,11 +10,10 @@ interface PropTypes {
     heigth: number
     data: any[]
     xname: string
-    data_key: { key: string, color: string }[]
+    data_key: Array<{ key: string, color: string }>
 }
 
 class MyBarChart extends React.Component<PropTypes, any> {
-
 
     renderBars() {
 
@@ -36,11 +35,12 @@ class MyBarChart extends React.Component<PropTypes, any> {
         return (
             <BarChart width={this.props.width} height={this.props.heigth} data={this.props.data}
                 margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-                <CartesianGrid strokeDasharray="3 3" />
+                <CartesianGrid strokeDasharray='3 3' />
                 <XAxis dataKey={this.props.xname} />
                 <YAxis />
                 <Tooltip />
                 <Legend />
+                <ReferenceLine y={0} stroke='#000'/>
                 {this.renderBars()}
             </BarChart>
         )

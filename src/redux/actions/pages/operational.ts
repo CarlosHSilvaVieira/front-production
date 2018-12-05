@@ -13,13 +13,23 @@ export const operationalActions = {
     GET_PRODUCTIONS_ORDERS: 'GET_PRODUCTIONS_ORDERS',
     SET_OPTIONS: 'SET_OPTIONS',
     SET_PRODUCTION_ORDERS: 'SET_PRODUCTION_ORDERS',
+    SET_STOCK: 'SET_STOCK',
 }
 
-export const fetchProductionOrders = () => {
+export const fetchProductionOrders = async () => {
 
-    const orders: Promise<ProductionOrderInterface[]> = axios.get(`${Constants.Sales_API.address}${Constants.Sales_API.routes.Pedidos}`)
+    const orders: Promise<ProductionOrderInterface[]> = await axios.get(`${Constants.Sales.address}${Constants.Sales.routes.Pedidos}`)
     .then((response) => response.data)
-    .catch((error) => { console.log(error); return [{ id: 1, quantidade: 25000, dataPedido: '', cliente: 'Qualquer' }] })
+    .catch((error) => { console.log(error); return [] })
+
+    return orders
+}
+
+export const getStock = () => {
+
+    const orders: Promise<number> = axios.get(`${Constants.Production.address}${Constants.Production.routes.getEstoqueMP}`)
+    .then((response) => response.data)
+    .catch((error) => { console.log(error); return 0 })
 
     return orders
 }
@@ -29,8 +39,8 @@ export const createOptionsProductionOrder = (options: ProductionOrderInterface[]
     return map(options, (option: ProductionOrderInterface) => {
 
         const new_option: OptionInterface = {
-            label: option.id.toString(),
-            value: option.id,
+            label: option.IdPedido.toString(),
+            value: option.IdPedido,
         }
 
         return new_option
@@ -50,7 +60,7 @@ export const setProductionOrders = (orders: ProductionOrderInterface[]) => ({
 
 export const fetchCostRawMaterial = () => {
 
-    const value: Promise<number> = axios.get(`${Constants.Financial_API.address}${Constants.Financial_API.routes.CustoMateriaPrima}`)
+    const value: Promise<number> = axios.get(`${Constants.Financial.address}${Constants.Financial.routes.CustoMateriaPrima}`)
     .then((response) => response.data)
     .catch((error) => { console.log(error); return 0 })
 
@@ -71,4 +81,10 @@ export const setSelectedOrder = (order: any) => ({
 
     type: operationalActions.SET_SELECTED_ORDER,
     payload: order,
+})
+
+export const setStock = (stock: number) => ({
+
+    type: operationalActions.SET_STOCK,
+    payload: stock,
 })
