@@ -71,9 +71,6 @@ class OperacionalPage extends React.Component<PropTypes, any> {
                     <div>
                         <div className={'form'}>
                             <h3>Disponibilidade de recursos no estoque para produção</h3>
-                            <Link to={'/'}>Operacional</Link>
-                            <Link to={'/tatico'}>Tático</Link>
-                            <Link to={'/estrategico'}>Estratégico</Link>
                             <Form>
                                 <Select
                                     label={'Ordem de produção'}

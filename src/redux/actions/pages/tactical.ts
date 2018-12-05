@@ -1,3 +1,4 @@
+import { ProductInterface } from './../../../interfaces/product'
 import { WorkedHours, EmployerInterface } from './../../../interfaces/employer'
 import axios from 'axios'
 import { startOfMonth, endOfMonth, format } from 'date-fns'
@@ -19,6 +20,7 @@ export const tacticalActions = {
     SET_PRODUCTION_ORDERS: 'SET_PRODUCTION_ORDERS',
     SET_HOURS: 'SET_HOURS',
     SET_DATA: 'SET_DATA',
+    SET_PRODUCT: 'SET_PRODUCT',
 }
 
 export const setData = (data: any) => ({
@@ -62,6 +64,12 @@ export const setTotalHours = (hours: number) => ({
     payload: hours,
 })
 
+export const setProduct = (product: ProductInterface) => ({
+
+    type: tacticalActions.SET_PRODUCT,
+    payload: product,
+})
+
 export const fetchCostRawMaterial = () => {
 
     const value: Promise<number> =
@@ -72,42 +80,49 @@ export const fetchCostRawMaterial = () => {
     return value
 }
 
+export const fetchProduct = () => {
+
+    const value: Promise<ProductInterface> =
+        axios.get(`${Constants.Financial_API.address}${Constants.Financial_API.routes.Produto}/2`)
+            .then((response) => response.data)
+            .catch((error) => { console.log(error); return 0 })
+
+    return value
+}
+
 export const fetchProdOrders = (month: number, year: number) => {
 
-    const start = startOfMonth(new Date(year, month, 1)).toJSON()
-    const end = endOfMonth(new Date(year, month, 1)).toJSON()
-
-    console.log(start)
-    console.log(end)
+    const start = format(startOfMonth(new Date(year, month, 1)), 'yyyy-MM-dd')
+    const end = format(endOfMonth(new Date(year, month, 1)), 'yyyy-MM-dd')
 
     const value: Promise<ProductionOrderInterface[]> =
-        axios.get(`${Constants.Sales_API.address}${Constants.Sales_API.routes.Pedidos}?${Constants.URL.inicio}=${start}&${Constants.URL.fim}=${end}`)
+        axios.get(`${Constants.Sales_API.address}${Constants.Sales_API.routes.PedidosPeriodo}${start}/${end}`)
             .then((response) => response.data)
             .catch((error) => { console.log(error); return [] })
 
     return value
 }
 
-export const fetchProduction = (month: number, year: number) => {
+export const fetchProduction = async (month: number, year: number) => {
 
     const { Production, URL } = Constants
 
-    const value: Promise<ProductionInterface[]> = axios.get(`${Production.address}${Production.routes.getAllProducaoPorMesTurno}`, {
+    const value: ProductionInterface[] = await axios.get(`${Production.address}${Production.routes.getAllProducaoPorMesTurno}`, {
         headers: {
             'Content-Type': 'application/json',
             'Access-Control-Allow-Origin': '*',
         },
     })
-        .then((response) => processProductionByMonth(month, response.data))
+        .then((response) => response.data)
         .catch((error) => { console.log(error); return [] })
 
-    return value
+    return processProductionByMonth(month, value)
 }
 
 export const fetchHoursMonth = async (month: number) => {
 
     const retorno: WorkedHours[] = await axios.get(
-        `${Constants.RH_API.address}${Constants.RH_API.routes.HorasTrabalhadas}/${Constants.URL.mes}/${month}`)
+        `${Constants.RH_API.address}${Constants.RH_API.routes.HorasTrabalhadas}/${Constants.URL.mes}/${(month + 1)}`)
         .then((response) => response.data)
         .catch((error) => { console.log(error); return [] })
 

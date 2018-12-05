@@ -11,8 +11,10 @@ import {
     fetchProduction,
     fetchHoursMonth,
     setData,
-    processProductionByMonth,
+    fetchProduct,
+    setProduct,
     setTotalHours,
+
 } from '../../redux/actions/pages/tactical'
 
 const mapStateToPros = (state: any) => {
@@ -26,6 +28,7 @@ const mapStateToPros = (state: any) => {
         production_orders: state.tacticalPage.production_orders,
         data: state.tacticalPage.data,
         worked_hours: state.tacticalPage.worked_hours,
+        product: state.tacticalPage.product,
     }
 
     return props
@@ -61,6 +64,13 @@ const mapDispatchToProps = (dispatch: any) => {
             fetchHoursMonth(month)
             .then((response) => dispatch(setTotalHours(response)))
             .catch((error) => dispatch(setTotalHours(error)))
+        },
+
+        fetchProduct: () => {
+
+            fetchProduct()
+            .then((response) => dispatch(setProduct(response)))
+            .catch((error) => dispatch(setProduct(error)))
         },
 
         setYear: (year: number) => {

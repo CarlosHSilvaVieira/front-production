@@ -17,6 +17,7 @@ import Card from '../../components/card/default'
 
 import connect from './connect'
 import './style.css'
+import { ProductInterface } from '../../interfaces/product'
 
 interface PropTypes {
 
@@ -27,6 +28,7 @@ interface PropTypes {
     production_orders: ProductionOrderInterface[],
     data: any,
     worked_hours: number
+    product: ProductInterface
     // Functions
 
     fetchCostRawMaterial: any,
@@ -36,6 +38,7 @@ interface PropTypes {
     setMonth: any,
     setData: any,
     fetchHoursMonth: any,
+    fetchProduct: any,
 }
 
 class TacticalPage extends React.Component<PropTypes, any> {
@@ -87,6 +90,18 @@ class TacticalPage extends React.Component<PropTypes, any> {
             tarde,
             noite,
         }
+    }
+
+    getTotalProduction(productions: ProductionInterface[]) {
+
+        let total: number = 0
+
+        forEach(productions, (production: ProductionInterface, index: number) => {
+
+            total += production.quantidade
+        })
+
+        return total
     }
 
     createData(productions: ProductionInterface[], orders: ProductionOrderInterface[]) {
@@ -149,6 +164,7 @@ class TacticalPage extends React.Component<PropTypes, any> {
         this.props.fetchProdOrders(this.props.month, this.props.year)
         this.props.fetchProduction(this.props.month, this.props.year)
         this.props.fetchHoursMonth(this.props.month)
+        this.props.fetchProduct()
     }
 
     render() {
@@ -183,13 +199,34 @@ class TacticalPage extends React.Component<PropTypes, any> {
                                 </div>
                                 <Card header={'Detalhes'}>
                                     <p>
-                                        <span>horas trabalhadas no mês: </span>
-                                        <span>{this.props.production_orders ? processProductionsOrders(this.props.production_orders) : ''}</span>
+                                        <span>Horas trabalhadas no mês: </span>
+                                        <span>{this.props.worked_hours ? this.props.worked_hours : ''}</span>
+                                    </p>
+                                    <p>
+                                        <span>Custo de produção: </span>
+                                        <span>{this.props.fetchCostRawMaterial && this.props.productions ?
+                                            Math.abs(this.getTotalProduction(this.props.productions) * this.props.cost_raw_material).toFixed(2)
+                                            : ''}
+                                        </span>
                                     </p>
                                     <p>
                                         <span>Custo de produção estimado: </span>
                                         <span>{this.props.fetchCostRawMaterial && this.props.production_orders ?
                                             Math.abs(processProductionsOrders(this.props.production_orders) * this.props.cost_raw_material).toFixed(2)
+                                            : ''}
+                                        </span>
+                                    </p>
+                                    <p>
+                                        <span>Valor de produção: </span>
+                                        <span>{this.props.fetchCostRawMaterial && this.props.productions ?
+                                            Math.abs(this.getTotalProduction(this.props.productions) * this.props.product.preco).toFixed(2)
+                                            : ''}
+                                        </span>
+                                    </p>
+                                    <p>
+                                        <span>Valor de produção estimado: </span>
+                                        <span>{this.props.fetchCostRawMaterial && this.props.production_orders ?
+                                            Math.abs(processProductionsOrders(this.props.production_orders) * this.props.product.preco).toFixed(2)
                                             : ''}
                                         </span>
                                     </p>

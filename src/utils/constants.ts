@@ -43,10 +43,11 @@ const Constants = {
     Sales_API: {
         address: 'https://sigemv.azurewebsites.net',
         routes: {
-            EventosClasses: '/api/EventosClasses/',
-            Vendas: '/api/Vendas/',
-            Values: '/api/Values/',
-            Pedidos: '/api/Pedidos/',
+            EventosClasses: '/EventosClasses/',
+            Vendas: '/Vendas/',
+            Values: '/Values/',
+            Pedidos: '/Pedidos/',
+            PedidosPeriodo: '/PedidosPeriodo/',
         },
     },
     Financial_API: {

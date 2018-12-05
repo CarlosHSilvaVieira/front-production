@@ -17,6 +17,9 @@ export default (state = initialState, action: any) => {
         case tacticalActions.SET_YEAR:
             return { ...state, year: action.payload }
 
+        case tacticalActions.SET_PRODUCT:
+            return { ...state, product: action.payload }
+
         case tacticalActions.SET_HOURS:
             return { ...state, worked_hours: action.payload }
 
